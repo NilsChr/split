@@ -1,9 +1,6 @@
 <template>
   <v-container fluid fill-height id="landing">
     <v-layout column >
-      <!--
-      <v-flex xs12> SPLIT A BILL </v-flex>
-      -->
       <v-flex xs8>
         <v-layout align-center justify-center fill-height>
           <logo />
@@ -15,14 +12,6 @@
        <v-flex xs1 id="by-bog">
         © BogSynth.com
       </v-flex>
-
-      <!--
-      <v-row>
-        <v-col class="mb-4 pt-5">
-          <div id="firebaseui-auth-container"></div>
-        </v-col>
-      </v-row>
-      -->
     </v-layout>
   </v-container>
 </template>

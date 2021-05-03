@@ -37,7 +37,6 @@ import DeleteSettlement from '../components/DeleteSettlement.vue';
 import UserExpenses from "../components/UserExpenses.vue";
 import ViewCalculation from "../components/ViewCalculation.vue";
 
-//import { firestore } from "firebase";
 export default {
   components: { UserExpenses, AddUser, ViewCalculation, Chart, DeleteSettlement },
   data() {
@@ -47,28 +46,12 @@ export default {
     };
   },
   methods: {
-    close() {
-      // Close ref
-      //this.ref();
-    },
   },
   computed: {
     settlement() {
       return this.$store.state.settlements.find((s) => s.id == this.id);
     },
-  },
-  activated() {
-    this.id = this.$route.params.id;
-    //const collectionName = "splitabill-settlements";
-    /*
-    this.ref = firestore()
-      .collection(collectionName)
-      .doc(this.id)
-      .onSnapshot((data) => {
-        console.log(data.data());
-      });
-      */
-  },
+  }
 };
 </script>
 
