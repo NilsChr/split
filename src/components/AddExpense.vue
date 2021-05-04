@@ -78,7 +78,6 @@
 <script>
 import auth from "../auth";
 import DB from "../services/DB";
-//import DB from "../services/DB";
 
 export default {
   data() {
@@ -102,7 +101,6 @@ export default {
     },
     toggleTag(tag) {
       if (this.addedTags.includes(tag)) {
-        // REMOVE TAG
         let index = this.addedTags.indexOf(tag);
         this.addedTags.splice(index, 1);
       } else {

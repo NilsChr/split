@@ -83,9 +83,7 @@ export default {
     userExpenses() {
       let id = this.$route.params.id;
       let settlement = this.$store.state.settlements.find((s) => s.id == id);
-      if (!settlement) return [];
-      //let email = this.currentUser.email;
-      
+      if (!settlement) return [];      
       return settlement.expenses.filter((e) => e.payedBy == this.user);
     },
     totalPayed() {

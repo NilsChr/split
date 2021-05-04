@@ -25,20 +25,26 @@
       <v-divider></v-divider>
       <view-calculation />
       <chart />
+      <delete-settlement />
     </v-card-text>
-    <delete-settlement />
   </v-card>
 </template>
 
 <script>
 import AddUser from "../components/AddUser.vue";
 import Chart from "../components/Chart.vue";
-import DeleteSettlement from '../components/DeleteSettlement.vue';
+import DeleteSettlement from "../components/DeleteSettlement.vue";
 import UserExpenses from "../components/UserExpenses.vue";
 import ViewCalculation from "../components/ViewCalculation.vue";
 
 export default {
-  components: { UserExpenses, AddUser, ViewCalculation, Chart, DeleteSettlement },
+  components: {
+    UserExpenses,
+    AddUser,
+    ViewCalculation,
+    Chart,
+    DeleteSettlement,
+  },
   data() {
     return {
       id: null,
@@ -46,12 +52,14 @@ export default {
     };
   },
   methods: {
+    close() {},
   },
   computed: {
     settlement() {
-      return this.$store.state.settlements.find((s) => s.id == this.id);
+      let id = this.$route.query.settlement;
+      return this.$store.state.settlements.find((s) => s.id == id);
     },
-  }
+  },
 };
 </script>
 

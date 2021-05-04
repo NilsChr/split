@@ -18,12 +18,12 @@ const routes = [
     component: Settlements
   },
   {
-    path: "/expenses/:id",
+    path: "/expenses",
     name: "Expenses",
     component: Expenses
   },
   {
-    path: "*",
+    path: "*/**",
     name: "Landing",
     component: Landing
   },

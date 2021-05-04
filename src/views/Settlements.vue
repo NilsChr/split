@@ -34,7 +34,7 @@ export default {
   methods: {
     goTo(id) {
       this.$store.commit(STORE_COMMITS.SET_SELECTED_SETTLEMENTS, id);
-      this.$router.push("/expenses/" + id);
+      this.$router.push({ path: "/expenses",  query: { settlement: id}});
     },
   },
   computed: {

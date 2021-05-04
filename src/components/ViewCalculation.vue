@@ -222,7 +222,7 @@ export default {
       return amount;
     },
     settlement() {
-      let id = this.$route.params.id;
+      let id = this.$route.query.settlement;
       return this.$store.state.settlements.find((s) => s.id == id);
     },
   },

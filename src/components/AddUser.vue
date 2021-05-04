@@ -74,8 +74,6 @@ export default {
   methods: {
     addUser() {
       if (this.title == "") return;
-
-      //DB.settlements.create(this.title);
       DB.settlements.addUser(this.$route.params.id, this.title);
       this.title = "";
       this.dialog = false;
@@ -86,7 +84,7 @@ export default {
   },
   computed: {
     settlement() {
-      let id = this.$route.params.id;
+      let id = this.$route.query.settlement;
       return this.$store.state.settlements.find((s) => s.id == id);
     },
   },

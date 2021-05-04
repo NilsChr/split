@@ -94,9 +94,6 @@
 
 <script>
 import DB from "../services/DB";
-//import auth from "../auth";
-//import DB from "../services/DB";
-//import DB from "../services/DB";
 
 export default {
   props: ["expense"],

@@ -6,7 +6,17 @@
     transition="dialog-bottom-transition"
   >
     <template v-slot:activator="{ on }">
-      <v-btn fab fixed bottom right rounded v-on="on" color="error" small v-if="isOwner">
+      <v-btn
+        fab
+        bottom
+        right
+        rounded
+        v-on="on"
+        color="error"
+        small
+        v-if="isOwner"
+        id="btn-del"
+      >
         <v-icon size="20">mdi-delete</v-icon>
       </v-btn>
     </template>
@@ -26,13 +36,14 @@
             column
             justify-center
           >
-
             <v-flex xs1>
               <v-layout justify-space-around>
                 <v-btn depressed color="primary" @click="dialog = false">
                   Cancel
                 </v-btn>
-                <v-btn depressed color="warning" @click="deleteSettlement"> Yes </v-btn>
+                <v-btn depressed color="warning" @click="deleteSettlement">
+                  Yes
+                </v-btn>
               </v-layout>
             </v-flex>
           </v-layout>
@@ -43,7 +54,7 @@
 </template>
 
 <script>
-import auth from '../auth';
+import auth from "../auth";
 import DB from "../services/DB";
 
 export default {
@@ -62,14 +73,27 @@ export default {
     },
   },
   computed: {
-      isOwner() {
-      let id = this.$route.params.id;
+    isOwner() {
+      let id = this.$route.query.settlement;
       let settlement = this.$store.state.settlements.find((s) => s.id == id);
-        return settlement?.owner == auth.user().email;
-      }
-  }
+      let email = auth.user()?.email;
+      console.log("is owner");
+      console.log(settlement);
+      console.log(email);
+      if (!settlement) return false;
+      if (!email) return false;
+      console.log("checking", settlement.owner == email);
+      return settlement.owner == email;
+    },
+  },
 };
 </script>
 
 <style>
+#btn-del {
+  position: absolute;
+  bottom: 10px;
+  right: 15px;
+  z-index: 1000;
+}
 </style>
