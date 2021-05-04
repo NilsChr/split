@@ -145,8 +145,7 @@ export default {
       return this.$store.state.settlements.find((s) => s.id == id);
     },
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {
     settlement(val) {
       if (!val) return;

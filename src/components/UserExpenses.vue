@@ -9,7 +9,9 @@
       <v-list-item v-on="on" two-line>
         <v-list-item-content>
           <v-list-item-title>{{ user }}</v-list-item-title>
-          <v-list-item-subtitle>{{ userExpenses.length }} expenses</v-list-item-subtitle>
+          <v-list-item-subtitle
+            >{{ userExpenses.length }} expenses</v-list-item-subtitle
+          >
         </v-list-item-content>
         <v-list-item-action>
           <v-icon>mdi-chevron-right</v-icon>
@@ -44,17 +46,47 @@
             </v-flex>
             <v-flex xs5>
               <v-subheader>{{ userExpenses.length }} Expenses</v-subheader>
-              <v-list v-for="expense in userExpenses" :key="expense.id" dense style="border-bottom: solid 1px white;">
+              <v-layout
+                v-for="expense in userExpenses"
+                :key="expense.id"
+                justify-space-between
+                style="border-bottom: solid 1px #aaaaaa"
+                class="pa-1"
+              >
+                <v-flex xs7 style="color: #bbbbbb">{{
+                  expense.message
+                }}</v-flex>
+                <v-flex xs4 class="text-right" style="font-size: 0.7rem"
+                  >{{ expense.amount }} kr</v-flex
+                >
+                <v-flex xs1 class="pl-2">
+                  <edit-expense
+                    :expense="expense"
+                    v-if="currentUser.email == user"
+                  />
+                </v-flex>
+              </v-layout>
+              <!--
+              <v-list
+                v-for="expense in userExpenses"
+                :key="expense.id"
+                dense
+                style="border-bottom: solid 1px white"
+              >
                 <v-list-item class="list-expense">
                   <v-list-item-title>{{ expense.amount }}</v-list-item-title>
                   <v-list-item-action-text>{{
                     expense.message
                   }}</v-list-item-action-text>
                   <v-list-item-action>
-                      <edit-expense :expense="expense" v-if="currentUser.email == user"/>
+                    <edit-expense
+                      :expense="expense"
+                      v-if="currentUser.email == user"
+                    />
                   </v-list-item-action>
                 </v-list-item>
               </v-list>
+              -->
             </v-flex>
           </v-layout>
         </v-container>
@@ -66,7 +98,7 @@
 <script>
 import auth from "../auth";
 import AddExpense from "./AddExpense.vue";
-import EditExpense from './EditExpense.vue';
+import EditExpense from "./EditExpense.vue";
 export default {
   components: { AddExpense, EditExpense },
   props: ["user"],
@@ -81,9 +113,9 @@ export default {
       return auth.user();
     },
     userExpenses() {
-      let id = this.$route.params.id;
+      let id = this.$route.query.settlement;
       let settlement = this.$store.state.settlements.find((s) => s.id == id);
-      if (!settlement) return [];      
+      if (!settlement) return [];
       return settlement.expenses.filter((e) => e.payedBy == this.user);
     },
     totalPayed() {

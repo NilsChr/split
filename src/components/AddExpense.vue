@@ -120,10 +120,11 @@ export default {
         tag: this.addedTag,
       };
 
-      DB.settlements.addExpense(this.$route.params.id, expense);
+      let id = this.$route.query.settlement;
+      DB.settlements.addExpense(id, expense);
 
       this.value = 0;
-      this.message = "";
+      this.title = "";
       this.addedTag = null;
 
       this.dialog = false;

@@ -1,8 +1,14 @@
 import { firestore } from "firebase";
 import auth from "../auth";
 import store, { STORE_COMMITS } from "../store";
+//import { DB_Collections } from "./DB";
 
-const collectionName = "splitabill-settlements";
+const env = process.env.NODE_ENV === 'production' ?
+  '-prod' :
+  '-test';
+
+const collectionName = "splitabill-settlements" + env;
+//const collectionName = DB_Collections.settlements;
 
 const settlements = {
   connect: function() {

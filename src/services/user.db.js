@@ -1,16 +1,24 @@
 import { firestore } from "firebase";
 import auth from "../auth";
 
-const collectionName = "splitabill-user";
+const env = process.env.NODE_ENV === 'production' ?
+  '-prod' :
+  '-test';
+
+export const DB_Collections = {
+    settlements:"splitabill-settlements" + env,
+    users:"splitabill-user" + env
+}
+const collectionName = DB_Collections.users;
 
 const user = {
   getUser: function() {
     return new Promise((resolve, reject) => {
       try {
-        const googleId = auth.user().uid;
+        const email = auth.user().email;
         firestore()
           .collection(collectionName)
-          .where("googleId", "==", googleId)
+          .where("email", "==", email)
           .get()
           .then((snapshot) => {
             if (snapshot.docs.length > 0) {

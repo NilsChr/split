@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     async deleteSettlement() {
-      let id = this.$route.params.id;
+      let id = this.$route.query.settlement;
 
       await DB.settlements.delete(id);
       this.$router.push("/settlements");
@@ -77,12 +77,8 @@ export default {
       let id = this.$route.query.settlement;
       let settlement = this.$store.state.settlements.find((s) => s.id == id);
       let email = auth.user()?.email;
-      console.log("is owner");
-      console.log(settlement);
-      console.log(email);
       if (!settlement) return false;
       if (!email) return false;
-      console.log("checking", settlement.owner == email);
       return settlement.owner == email;
     },
   },

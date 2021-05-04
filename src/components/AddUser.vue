@@ -74,12 +74,16 @@ export default {
   methods: {
     addUser() {
       if (this.title == "") return;
-      DB.settlements.addUser(this.$route.params.id, this.title);
+            let id = this.$route.query.settlement;
+
+      DB.settlements.addUser(id, this.title);
       this.title = "";
       this.dialog = false;
     },
     deleteParticipant(user) {
-      DB.settlements.deleteUser(this.$route.params.id, user);
+              let id = this.$route.query.settlement;
+
+      DB.settlements.deleteUser(id, user);
     },
   },
   computed: {

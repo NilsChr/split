@@ -7,7 +7,7 @@
   >
     <template v-slot:activator="{ on }">
       <v-list-item v-on="on" two-line>
-        <v-list-item-content>
+        <v-list-item-content @click="calculate">
           <v-list-item-title>View Calculation</v-list-item-title>
           <v-list-item-subtitle
             >{{ totalExpenses.length }} expenses</v-list-item-subtitle
@@ -30,65 +30,82 @@
       </v-toolbar>
 
       <v-card-text v-if="settlement">
-        <v-container fluid fill-height v-if="currentUser">
+        <v-container fluid fill-height v-if="currentUser && calc">
           <v-layout
             style="height: 100%; min-height: 500px"
             column
             justify-start
           >
             <v-flex xs2 class="pb-2">
-              <v-btn
-                class="ma-1"
-                v-for="(tag, i) in tags"
-                :key="i"
-                :color="tag.color"
-                small
-                :outlined="selectedTag != tag"
-                @click="setTag(tag)"
-              >
-                {{ tag.title }}
-              </v-btn>
+            </v-flex>
+            <v-flex xs2 class="pb-2">
+              Combined Total: {{ totalPayed }} kr
             </v-flex>
             <v-flex xs2 class="pb-5">
-              Combined Total: {{ totalPayed }} kr
+              Evenly split: {{ calc.targetSum.toFixed(0) }} kr
             </v-flex>
             <v-flex
               xs5
               v-for="(user, i) in settlement.users"
-              :key="i"
+              :key="`user-${i}`"
+              
               class="pb-3"
             >
-              <v-layout justify-space-between>
-                <v-flex xs8> {{ user }}</v-flex>
-                <v-flex xs6 class="text-right"
-                  >{{ userExpenses(user).length }} Expenses</v-flex
-                >
-              </v-layout>
+              <v-card dark class="pa-3 mb-3" color="#1a1a1a">
+                <v-layout justify-space-between>
+                  <v-flex xs8> {{ user }}</v-flex>
+                  <v-flex xs6 class="text-right">
+                    expenses: {{ calc.totalUserExpenses[user] }}
+                  </v-flex>
+                </v-layout>
 
-              <v-list dense>
-                <v-list-item
-                  class="list-expense"
-                  v-for="expense in userExpenses(user)"
-                  :key="expense.id"
-                >
-                  <v-list-item-title>{{ expense.amount }}</v-list-item-title>
-                  <v-list-item-action-text>{{
-                    expense.message
-                  }}</v-list-item-action-text>
-                </v-list-item>
+                <v-list dense color="transparent">
+                  <v-layout
+                    class="list-expense pl-2"
+                    v-for="expense in userExpenses(user)"
+                    :key="`expense-${expense.id}`"
 
-                <v-list-item class="text-right">
-                  <v-list-item-title>
-                    Total: {{ userExpensesSum(user) }} kr
-                  </v-list-item-title>
-                </v-list-item>
-                <v-list-item class="text-right">
-                  <v-list-item-title>
-                    Owes: {{ userOwesSum(user) }} kr
-                  </v-list-item-title>
-                </v-list-item>
-              </v-list>
-              <v-divider></v-divider>
+                    justify-space-between
+                  >
+                    <v-flex xs8 style="color:#bbbbbb;">{{ expense.message }}</v-flex>
+                    <v-flex xs4 class="text-right" style="font-size: 0.7rem;">{{ expense.amount }} kr</v-flex>
+                  </v-layout>
+                  <v-list-item class="text-right pb-3">
+                    <v-list-item-title>
+                      Total payed: {{ calc.totalUserPayment[user] }} kr
+                    </v-list-item-title>
+                  </v-list-item>
+
+                  <v-subheader
+                    v-if="getOws(user).length > 0"
+                    class="pay-subheader"
+                    >Ows</v-subheader
+                  >
+                  <v-list-item
+                    class="text-left pay-list"
+                    v-for="(owe, i) in getOws(user)"
+                    :key="`ows-${i}`"
+                  >
+                    <v-list-item-title>
+                      {{ owe.value }} kr to {{ owe.user }}
+                    </v-list-item-title>
+                  </v-list-item>
+                  <v-subheader
+                    v-if="getRecieves(user).length > 0"
+                    class="pay-subheader"
+                    >Gets</v-subheader
+                  >
+                  <v-list-item
+                    class="text-left pay-list"
+                    v-for="(owe, i) in getRecieves(user)"
+                    :key="`gets-${i}`"
+                  >
+                    <v-list-item-title>
+                      {{ owe.value }} kr from {{ owe.user }}
+                    </v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-card>
             </v-flex>
           </v-layout>
         </v-container>
@@ -99,100 +116,40 @@
 
 <script>
 import auth from "../auth";
+import SplitCalculator from "../services/splitCalculator/splitCalculator";
+
 export default {
   props: ["user"],
   data() {
     return {
       dialog: false,
       title: "",
-      selectedTag: null,
-      tags: [
-        { title: "mat", color: "#59CD90" },
-        { title: "regning", color: "#FAC05E" },
-        { title: "kos", color: "#F79D84" },
-        { title: "div", color: "#3FA7D6" },
-      ],
+      calc: null,
     };
   },
   methods: {
-    setTag(tag) {
-      if (tag == this.selectedTag) this.selectedTag = null;
-      else this.selectedTag = tag;
+    calculate() {
+      let calc = new SplitCalculator(this.settlement);
+      calc.settle();
+      console.log(calc);
+      this.calc = calc;
+    },
+    getOws(user) {
+      let out = this.calc.payedByUser.filter((o) => o.name == user)[0];
+      if (!out) return [];
+      return out.ows;
+    },
+    getRecieves(user) {
+      let out = this.calc.payedByUser.filter((o) => o.name == user)[0];
+      if (!out) return [];
+      return out.gets;
     },
     userExpenses(user) {
-      let id = this.$route.params.id;
+      let id = this.$route.query.settlement;
+
       let settlement = this.$store.state.settlements.find((s) => s.id == id);
       if (!settlement) return [];
-
-      if (this.selectedTag) {
-        return settlement.expenses.filter(
-          (e) =>
-            e.payedBy == user && e.tag && e.tag.title == this.selectedTag.title
-        );
-      }
-
       return settlement.expenses.filter((e) => e.payedBy == user);
-    },
-    userExpensesSum(user) {
-      let id = this.$route.params.id;
-      let settlement = this.$store.state.settlements.find((s) => s.id == id);
-      if (!settlement) return [];
-
-      let sum = 0;
-
-      if (this.selectedTag) {
-        settlement.expenses
-          .filter(
-            (e) =>
-              e.payedBy == user &&
-              e.tag &&
-              e.tag.title == this.selectedTag.title
-          )
-          .forEach((e) => {
-            sum += parseInt(e.amount);
-          });
-        return sum;
-      }
-
-      settlement.expenses
-        .filter((e) => e.payedBy == user)
-        .forEach((e) => {
-          sum += parseInt(e.amount);
-        });
-      return sum;
-    },
-    userOwesSum(user) {
-      let id = this.$route.params.id;
-      let settlement = this.$store.state.settlements.find((s) => s.id == id);
-      if (!settlement) return [];
-
-      let sum = 0;
-
-      if (this.selectedTag) {
-        settlement.expenses
-          .filter(
-            (e) =>
-              e.payedBy == user &&
-              e.tag &&
-              e.tag.title == this.selectedTag.title
-          )
-          .forEach((e) => {
-            sum += parseInt(e.amount);
-          });
-        return sum;
-      }
-
-      settlement.expenses
-        .filter((e) => e.payedBy != user)
-        .forEach((e) => {
-          sum += parseInt(e.amount);
-        });
-
-      let userSum = this.userExpensesSum(user);
-
-      let owes = (sum - userSum) / settlement.users.length;
-      if (owes < 0) owes = 0;
-      return owes;
     },
   },
   computed: {
@@ -200,18 +157,7 @@ export default {
       return auth.user();
     },
     totalExpenses() {
-      let id = this.$route.params.id;
-      let settlement = this.$store.state.settlements.find((s) => s.id == id);
-      if (!settlement) return [];
-      //let email = this.currentUser.email;
-
-      if (this.selectedTag != null) {
-        return settlement.expenses.filter(
-          (e) => e.tag && e.tag.title == this.selectedTag.title
-        );
-      }
-
-      return settlement.expenses;
+      return this.settlement.expenses;
     },
 
     totalPayed() {
@@ -231,6 +177,15 @@ export default {
 
 <style>
 .list-expense {
+  max-height: 20px;
+  min-height: 20px !important;
+  border-bottom: 1px solid #333333;
+}
+.pay-list {
+  max-height: 20px;
+  min-height: 20px !important;
+}
+.pay-subheader {
   max-height: 20px;
   min-height: 20px !important;
 }

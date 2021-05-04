@@ -71,7 +71,8 @@
                   (amount == expense.amount &&
                     message == expense.message &&
                     addedTag &&
-                    addedTag.title == expense.tag.title)
+                    (expense.tag &&
+                    addedTag.title == expense.tag.title))
                 "
                 color="primary"
                 @click="updateExpense"
@@ -129,11 +130,15 @@ export default {
       this.expense.message = this.message;
       this.expense.tag = this.addedTag;
       this.expense.amount = this.amount;
-      DB.settlements.updateExpense(this.$route.params.id, this.expense);
+      let id = this.$route.query.settlement;
+
+      DB.settlements.updateExpense(id, this.expense);
       this.dialog = false;
     },
     deleteExpense() {
-      DB.settlements.deleteExpense(this.$route.params.id, this.expense);
+      let id = this.$route.query.settlement;
+
+      DB.settlements.deleteExpense(id, this.expense);
       this.dialog = false;
     },
   },
