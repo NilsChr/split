@@ -173,6 +173,11 @@ export default {
       return this.$store.state.settlements.find((s) => s.id == id);
     },
   },
+  watch: {
+    settlement() {
+      this.calculate();
+    }
+  }
 };
 </script>
 

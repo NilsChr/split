@@ -3,8 +3,8 @@ function SplitCalculator(settlement) {
   this.participants = [...settlement.users];
   this.targetSum = 0;
   let totalExpenses = 0;
-  this.settlement.expenses.forEach((e) => (totalExpenses += e.amount));
-  this.targetSum = totalExpenses / this.participants.length;
+  this.settlement.expenses.forEach((e) => (totalExpenses += parseInt(e.amount)));
+  this.targetSum = parseInt(totalExpenses / this.participants.length);
   this.totalUserPayment = [];
   this.totalUserExpenses = [];
 
@@ -14,7 +14,7 @@ function SplitCalculator(settlement) {
       settlement.expenses
         .filter((e) => e.payedBy === p)
         .forEach((e) => {
-          payed += e.amount;
+          payed += parseInt(e.amount);
         });
       this.totalUserExpenses[p] = settlement.expenses.filter(
         (e) => e.payedBy === p
@@ -53,13 +53,13 @@ function SplitCalculator(settlement) {
         highest.payed -= needed;
         lowest.payed += needed;
         let pay = {
-          value: needed.toFixed(2),
+          value: parseFloat(needed.toFixed(2)),
           user: highest.name,
         };
         lowest.ows.push(pay);
 
         let get = {
-          value: needed.toFixed(2),
+          value: parseFloat(needed.toFixed(2)),
           user: lowest.name,
         };
         highest.gets.push(get);

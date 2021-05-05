@@ -21,7 +21,7 @@
         <v-container fluid fill-height>
           <v-layout style="height: 100%" column justify-center>
             <v-flex xs2>
-              <v-card class="pa-5" color="secondary">
+              <v-card class="pa-5" color="calculationCard">
                 <v-text-field
                   class="trans value centered-input transparent"
                   v-model="value"
