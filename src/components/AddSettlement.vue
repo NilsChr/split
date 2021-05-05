@@ -12,11 +12,11 @@
       </v-btn>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title>Add Settlement</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>

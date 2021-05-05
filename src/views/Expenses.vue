@@ -1,13 +1,13 @@
 <template>
-  <v-card tile dark>
-    <v-toolbar dark color="transparent" flat>
+  <v-card tile>
+    <v-toolbar color="transparent" flat>
       <v-toolbar-title v-if="settlement">{{
         settlement.title
       }}</v-toolbar-title>
       <v-toolbar-title v-else>Expenses</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-btn icon dark to="/settlements" @click="close">
+      <v-btn icon to="/settlements" @click="close">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </v-toolbar>

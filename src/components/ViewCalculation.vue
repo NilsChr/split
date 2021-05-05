@@ -19,12 +19,12 @@
       </v-list-item>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title>Calculation</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -36,8 +36,7 @@
             column
             justify-start
           >
-            <v-flex xs2 class="pb-2">
-            </v-flex>
+            <v-flex xs2 class="pb-2"> </v-flex>
             <v-flex xs2 class="pb-2">
               Combined Total: {{ totalPayed }} kr
             </v-flex>
@@ -48,10 +47,9 @@
               xs5
               v-for="(user, i) in settlement.users"
               :key="`user-${i}`"
-              
               class="pb-3"
             >
-              <v-card dark class="pa-3 mb-3" color="#1a1a1a">
+              <v-card class="pa-3 mb-3" color="calculationCard">
                 <v-layout justify-space-between>
                   <v-flex xs8> {{ user }}</v-flex>
                   <v-flex xs6 class="text-right">
@@ -64,11 +62,14 @@
                     class="list-expense pl-2"
                     v-for="expense in userExpenses(user)"
                     :key="`expense-${expense.id}`"
-
                     justify-space-between
                   >
-                    <v-flex xs8 style="color:#bbbbbb;">{{ expense.message }}</v-flex>
-                    <v-flex xs4 class="text-right" style="font-size: 0.7rem;">{{ expense.amount }} kr</v-flex>
+                    <v-flex xs8 style="color: #bbbbbb">{{
+                      expense.message
+                    }}</v-flex>
+                    <v-flex xs4 class="text-right" style="font-size: 0.7rem"
+                      >{{ expense.amount }} kr</v-flex
+                    >
                   </v-layout>
                   <v-list-item class="text-right pb-3">
                     <v-list-item-title>

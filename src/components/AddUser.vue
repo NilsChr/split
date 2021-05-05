@@ -9,11 +9,11 @@
       <v-btn block color="primary" v-on="on"> Participants </v-btn>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title>Participants</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -46,7 +46,12 @@
                   <v-list-item-title>
                     {{ user }}
                   </v-list-item-title>
-                  <v-list-item-action>
+                  <v-list-item-action
+                    v-if="
+                      currentUser == settlement.owner &&
+                      user != settlement.owner
+                    "
+                  >
                     <v-btn icon x-small @click="deleteParticipant(user)">
                       <v-icon> mdi-delete </v-icon>
                     </v-btn>
@@ -62,6 +67,7 @@
 </template>
 
 <script>
+import auth from "../auth";
 import DB from "../services/DB";
 
 export default {
@@ -74,14 +80,14 @@ export default {
   methods: {
     addUser() {
       if (this.title == "") return;
-            let id = this.$route.query.settlement;
+      let id = this.$route.query.settlement;
 
       DB.settlements.addUser(id, this.title);
       this.title = "";
       this.dialog = false;
     },
     deleteParticipant(user) {
-              let id = this.$route.query.settlement;
+      let id = this.$route.query.settlement;
 
       DB.settlements.deleteUser(id, user);
     },
@@ -90,6 +96,9 @@ export default {
     settlement() {
       let id = this.$route.query.settlement;
       return this.$store.state.settlements.find((s) => s.id == id);
+    },
+    currentUser() {
+      return auth.user().email;
     },
   },
 };

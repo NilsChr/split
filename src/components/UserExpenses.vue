@@ -19,15 +19,15 @@
       </v-list-item>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title v-if="currentUser.email == user"
           >Your expenses</v-toolbar-title
         >
         <v-toolbar-title v-else>Expenses</v-toolbar-title>
 
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -66,27 +66,6 @@
                   />
                 </v-flex>
               </v-layout>
-              <!--
-              <v-list
-                v-for="expense in userExpenses"
-                :key="expense.id"
-                dense
-                style="border-bottom: solid 1px white"
-              >
-                <v-list-item class="list-expense">
-                  <v-list-item-title>{{ expense.amount }}</v-list-item-title>
-                  <v-list-item-action-text>{{
-                    expense.message
-                  }}</v-list-item-action-text>
-                  <v-list-item-action>
-                    <edit-expense
-                      :expense="expense"
-                      v-if="currentUser.email == user"
-                    />
-                  </v-list-item-action>
-                </v-list-item>
-              </v-list>
-              -->
             </v-flex>
           </v-layout>
         </v-container>

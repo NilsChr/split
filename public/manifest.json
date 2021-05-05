@@ -2,6 +2,7 @@
     "theme_color": "#5bd647",
     "background_color": "#1a1a1a",
     "display": "standalone",
+    "orientation": "portrait",
     "scope": "https://bogsynth.com/split/",
     "start_url": "https://bogsynth.com/split/",
     "name": "Split",

@@ -2,7 +2,7 @@
   <v-container class="pa-0">
     <v-layout column fill-height>
       <v-flex xs12>
-        <v-card dark tile style="height: 100vh;">
+        <v-card tile style="height: 100vh;">
           <v-card-title> SETTLEMENTS </v-card-title>
           <account />
           <v-list>

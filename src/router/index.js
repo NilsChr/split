@@ -22,11 +22,13 @@ const routes = [
     name: "Expenses",
     component: Expenses
   },
+  
   {
     path: "*/**",
     name: "Landing",
     component: Landing
   },
+
 ];
 
 const router = new VueRouter({

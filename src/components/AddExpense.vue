@@ -9,11 +9,11 @@
       <v-btn block depressed color="primary" v-on="on"> Add expense </v-btn>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title>Add Expense</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -21,7 +21,7 @@
         <v-container fluid fill-height>
           <v-layout style="height: 100%" column justify-center>
             <v-flex xs2>
-              <v-card class="pa-5" color="primary">
+              <v-card class="pa-5" color="secondary">
                 <v-text-field
                   class="trans value centered-input transparent"
                   v-model="value"

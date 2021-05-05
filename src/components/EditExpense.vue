@@ -11,11 +11,11 @@
       </v-btn>
     </template>
 
-    <v-card dark>
-      <v-toolbar dark color="transparent" flat>
+    <v-card>
+      <v-toolbar color="transparent" flat>
         <v-toolbar-title>Edit Expense</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn icon dark @click="dialog = false">
+        <v-btn icon @click="dialog = false">
           <v-icon>mdi-close</v-icon>
         </v-btn>
       </v-toolbar>
@@ -71,8 +71,8 @@
                   (amount == expense.amount &&
                     message == expense.message &&
                     addedTag &&
-                    (expense.tag &&
-                    addedTag.title == expense.tag.title))
+                    expense.tag &&
+                    addedTag.title == expense.tag.title)
                 "
                 color="primary"
                 @click="updateExpense"

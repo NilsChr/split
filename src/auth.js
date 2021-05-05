@@ -36,23 +36,25 @@ const auth = {
     this.ui = new firebaseui.auth.AuthUI(firebase.auth());
 
     firebase.auth().onAuthStateChanged(async (user) => {
-        console.log('state changed', user)
+      console.log("state changed", user);
       if (user) {
         let account = await DB.user.getUser();
         if (!account) {
           account = await DB.user.createUser();
         }
+        this.context.$vuetify.theme.dark = account.darkmode;
+
         DB.settlements.connect();
-        store.commit(STORE_COMMITS.SET_CURRENT_USER, user);
+        store.commit(STORE_COMMITS.SET_CURRENT_USER, account);
         router
           .push("/settlements")
           .catch(() => {})
           .finally();
       } else {
         router
-        .push("/landing")
-        .catch(() => {})
-        .finally(); 
+          .push("/landing")
+          .catch(() => {})
+          .finally();
       }
     });
   },

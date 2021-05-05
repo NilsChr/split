@@ -1,15 +1,9 @@
 import { firestore } from "firebase";
 import auth from "../auth";
 
-const env = process.env.NODE_ENV === 'production' ?
-  '-prod' :
-  '-test';
+const env = process.env.NODE_ENV === "production" ? "-prod" : "-test";
 
-export const DB_Collections = {
-    settlements:"splitabill-settlements" + env,
-    users:"splitabill-user" + env
-}
-const collectionName = DB_Collections.users;
+const collectionName = "splitabill-user" + env;
 
 const user = {
   getUser: function() {
@@ -43,7 +37,8 @@ const user = {
           .doc();
 
         let user = {
-          email: auth.user().email
+          email: auth.user().email,
+          darkmode: false,
         };
 
         ref.set(user);
@@ -53,6 +48,16 @@ const user = {
         reject(e);
       }
     });
+  },
+  updateUser: async function(user) {
+    const id = user.id;
+    let data = { ...user };
+    delete data.id;
+
+    await firestore()
+      .collection(collectionName)
+      .doc(id)
+      .update(data);
   },
 };
 
